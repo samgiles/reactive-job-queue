@@ -1,0 +1,15 @@
+{
+  "name": "reactive-queue",
+  "version": "0.0.0",
+  "description": "A reactive, reliable, job queue which includes state transitions",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Samuel Giles",
+  "license": "MIT",
+  "dependencies": {
+    "hiredis": "^0.1.17",
+    "redis": "^0.11.0"
+  }
+}
