@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "hiredis": "^0.1.17",
+    "node-libuuid": "^1.0.0",
     "redis": "^0.11.0"
   }
 }
