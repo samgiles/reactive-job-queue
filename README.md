@@ -9,6 +9,15 @@ atomically changes in the database from `queued`, to `processing` to
 
 `npm install reactive-job-queue`
 
+These examples assume you have a Redis server running on localhost on the
+standard port.  You can configure `port` and `host` using the constructor, or
+the constructor will pick up the values in the `REDIS_PORT` and `REDIS_HOST`
+environment variables.
+
+If you have [docker](https://docker.com) installed, you can `source activate_docker.sh` to start a
+Redis server in a docker instance and set up the appropriate `REDIS_PORT` and
+`REDIS_HOST` environment variables automatically.
+
 Example: Producer
 
 ```JS
