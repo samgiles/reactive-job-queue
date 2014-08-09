@@ -88,6 +88,7 @@ function.
 
 # TODO
 
+- Promises API
 - Provide more generic job state transition.
 - Provide mechanisms to recover jobs from each state.
 
