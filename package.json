@@ -7,16 +7,20 @@
   "bugs": "https://github.com/samgiles/reactive-job-queue/issues",
   "homepage": "https://github.com/samgiles/reactive-job-queue",
   "repository": {
-	  "type": "git",
-	  "url": "http://github.com/samgiles/reactive-job-queue.git"
+    "type": "git",
+    "url": "http://github.com/samgiles/reactive-job-queue.git"
   },
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/ --recursive"
   },
   "dependencies": {
     "hiredis": "^0.1.17",
     "node-libuuid": "^1.0.0",
     "redis": "^0.11.0"
+  },
+  "devDependencies": {
+    "fakeredis": "^0.2.0",
+    "mocha": "^1.21.4"
   }
 }
