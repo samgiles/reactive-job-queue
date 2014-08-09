@@ -14,7 +14,7 @@ Example: Producer
 ```JS
 var JobQueue = require('reactive-job-queue');
 
-var q = new JobQueue({ queuename: 'myjobqueue' });
+var q = new JobQueue({ queuename: 'myjobqueue', port: 6379, host: '0.0.0.0' });
 q.send({"name": "test", "job": "data"}, function(error, result) {
 	if (error) {
 		// Should re-send or handle, if there was not an error.
@@ -29,7 +29,7 @@ Example: Consumer/Job processor
 ```JS
 var JobQueue = require('reactive-job-queue');
 
-var q = new JobQueue({ queuename: 'myjobqueue' });
+var q = new JobQueue({ queuename: 'myjobqueue', port: 6379, host: '0.0.0.0' });
 
 q.registerProcessor(function(data) {
 	yourProcessDataFunction(data, function(error, complete) {
