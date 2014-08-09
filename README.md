@@ -31,7 +31,7 @@ Register a function to process items on the queue as they arrive. Only one
 function can be used to process items coming from the queue. Only the first
 registered function will be used, everything else will be ignored.
 
-- `callback` the function to call with the job data from the queue.  This
+- `callback` - (Function) the function to call with the job data from the queue.  This
   should accept an error and a data argument: (error, data).  The data is the
   object sent from the client with an additional `__reactive_job_id` property
   as a 'uuid'.
@@ -42,5 +42,5 @@ Notify the job queue that a job has been processed successfully.  The job
 object must be identical to the job received from the queue in the processor
 function.
 
-- `job` the job to move into the complete state
-- `callback` the callback to call when this operation completes.
+- `job`  - (Object) the job to move into the complete state
+- `callback` - (Function) the callback to call when this operation completes.
