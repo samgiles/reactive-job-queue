@@ -73,7 +73,7 @@ function can be used to process items coming from the queue. Only the first
 registered function will be used, everything else will be ignored.
 
 - `callback` - (Function) the function to call with the job data from the queue.  This
-  should accept an error and a data argument: (error, data).  The data is the
+  should accept a data argument: (data).  The data is the
   object sent from the client with an additional `__reactive_job_id` property
   as a 'uuid'.
 
