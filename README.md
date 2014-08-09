@@ -55,7 +55,7 @@ Creates a new ReactiveJobQueue.
   - `queuename` - (String) The name of the queue to put/receive jobs to/from.
   - `port`      - (Integer|Optional) The redis port to connect to.
   - `host`      - (String) The port or hostname of the redis server.
-  - `concurrency` - (Integer) The number of jobs to process at ay time.
+  - `concurrency` - (Integer) The number of jobs to process at any time.
 
 ### send(job, callback)
 
