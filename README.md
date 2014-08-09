@@ -85,3 +85,12 @@ function.
 
 - `job`  - (Object) the job to move into the complete state
 - `callback` - (Function) the callback to call when this operation completes.
+
+# TODO
+
+- Provide more generic job state transition.
+- Provide mechanisms to recover jobs from each state.
+
+# License
+
+Samuel Giles - MIT Licensed
