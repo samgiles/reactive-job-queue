@@ -1,7 +1,48 @@
 # Reactive Job Queue
 
-A Reactive Queue API backed by Redis.
+A Reactive job queue backed by Redis.  This Job queue provides guarantees
+(as much as Redis can provide) about the loss of job data. The job state
+atomically changes in the database from `queued`, to `processing` to
+`complete` so the data is always available in the database.
 
+#### Get Started
+
+`npm install reactive-job-queue`
+
+Example: Producer
+
+```JS
+var JobQueue = require('reactive-job-queue');
+
+var q = new JobQueue({ queuename: 'myjobqueue' });
+q.send({"name": "test", "job": "data"}, function(error, result) {
+	if (error) {
+		// Should re-send or handle, if there was not an error.
+		// the data was added to the queue and it is safe to continue
+	}
+});
+
+```
+
+Example: Consumer/Job processor
+
+```JS
+var JobQueue = require('reactive-job-queue');
+
+var q = new JobQueue({ queuename: 'myjobqueue' });
+
+q.registerProcessor(function(data) {
+	yourProcessDataFunction(data, function(error, complete) {
+		if (!error) {
+			q.notifyJobComplete(data, function(error, data) {
+				if (!error) {
+					console.log("Processing complete!");
+				}
+			});
+		}
+	});
+});
+```
 
 # API
 
