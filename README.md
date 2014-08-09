@@ -62,9 +62,10 @@ Creates a new ReactiveJobQueue.
 - `options` - (Object) Settings for this Job Queue, must be set as some
               members are mandatory
   - `queuename` - (String) The name of the queue to put/receive jobs to/from.
-  - `port`      - (Integer|Optional) The redis port to connect to.
-  - `host`      - (String) The port or hostname of the redis server.
-  - `concurrency` - (Integer) The number of jobs to process at any time.
+  - `port`      - (Integer|Optional) The redis port to connect to (uses env var `REDIS_PORT` if not set).
+  - `host`      - (String|Optional) The port or hostname of the redis server (uses env var `REDIS_HOST` if not set).
+  - `concurrency` - (Integer|Optional) The number of jobs to process at any time.
+  - `redis`       - (Object|Optional) The instance of the redis client to use.
 
 ### send(job, callback)
 
