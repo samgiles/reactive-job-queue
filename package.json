@@ -1,13 +1,19 @@
 {
-  "name": "reactive-queue",
+  "name": "reactive-job-queue",
   "version": "0.0.0",
-  "description": "A reactive, reliable, job queue which includes state transitions",
+  "author": "Samuel Giles",
+  "license": "MIT",
+  "description": "A reactive, reliable, job queue which includes state transitions. Backed by redis",
+  "bugs": "https://github.com/samgiles/reactive-job-queue/issues",
+  "homepage": "https://github.com/samgiles/reactive-job-queue",
+  "repository": {
+	  "type": "git",
+	  "url": "http://github.com/samgiles/reactive-job-queue.git"
+  },
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Samuel Giles",
-  "license": "MIT",
   "dependencies": {
     "hiredis": "^0.1.17",
     "node-libuuid": "^1.0.0",
