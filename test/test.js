@@ -7,7 +7,7 @@ describe("JobQueue", function() {
 
 	describe("#send(job, callback)", function() {
 
-		it("Should send the job data to the queue", function() {
+		it("Should send the job data to the queue", function(done) {
 			var q = new JobQueue({
 				redis: fakeredis.createClient("testsend"),
 				queuename: 'myqueue'
@@ -23,15 +23,17 @@ describe("JobQueue", function() {
 				q.redisClient.rpop(['myqueue'], function(error, data) {
 					if (error) {
 						assert.fail('error', 'no error', error);
+						done();
 						return;
 					}
 
 					assert.equal('data', JSON.parse(data).test);
+					done();
 				});
 			});
 		});
 
-		it("Should callback with error if the job parameter is not an object", function() {
+		it("Should callback with error if the job parameter is not an object", function(done) {
 			var q = new JobQueue({
 				redis: fakeredis.createClient("testsend"),
 				queuename: 'myqueue'
@@ -40,8 +42,11 @@ describe("JobQueue", function() {
 			q.send(null, function(error, data) {
 				if (!error) {
 					assert.fail("no error", "error");
+					done();
 					return;
 				}
+
+				done();
 			});
 		});
 
@@ -84,15 +89,11 @@ describe("JobQueue", function() {
 		});
 
 		it("Should only receive as many jobs concurrently as specified in the constructor", function(done) {
-			this.timeout(100000);
 			var q = new JobQueue({
 				redis: fakeredis.createClient("test-registerprocessor2"),
 				queuename: 'myqueue-test',
 				concurrency: 2
 			});
-
-			var spy = sinon.spy();
-
 
 			q.send({some: "data1"}, function(error, data) {
 				if (error) {
@@ -138,6 +139,22 @@ describe("JobQueue", function() {
 						});
 					});
 				}
+			});
+		});
+	});
+
+	describe("#waitQueueLength(callback)", function() {
+		it("Should receive the length of the wait queue as its callback data argument", function(done) {
+			var q = new JobQueue({
+				redis: fakeredis.createClient("test-waitqueuelength1"),
+				queuename: 'myqueue-test'
+			});
+
+			q.send({data: "some"}, function(error, data) {
+				q.waitQueueLength(function(error, data) {
+					assert.equal(1, data);
+					done();
+				});
 			});
 		});
 	});
