@@ -1,6 +1,6 @@
 {
   "name": "reactive-job-queue",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Samuel Giles",
   "license": "MIT",
   "description": "A reactive, reliable, job queue which includes state transitions. Backed by redis",
@@ -28,8 +28,8 @@
   },
   "config": {
     "blanket": {
-	  "pattern": "lib/index.js",
-	  "data-cover-never": "node_modules"
-	}
+      "pattern": "lib/index.js",
+      "data-cover-never": "node_modules"
+    }
   }
 }
