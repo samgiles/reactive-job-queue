@@ -12,7 +12,8 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha test/ --recursive"
+    "test": "mocha test/ --recursive --check-leaks --reporter=nyan",
+    "coverage": "mocha test/test.js --require blanket --reporter=html-cov > cover.html"
   },
   "dependencies": {
     "hiredis": "^0.1.17",
@@ -20,8 +21,15 @@
     "redis": "^0.11.0"
   },
   "devDependencies": {
+    "blanket": "^1.1.6",
     "fakeredis": "^0.2.0",
     "mocha": "^1.21.4",
     "sinon": "^1.10.3"
+  },
+  "config": {
+    "blanket": {
+	  "pattern": "lib/index.js",
+	  "data-cover-never": "node_modules"
+	}
   }
 }
