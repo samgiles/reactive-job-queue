@@ -1,6 +1,6 @@
 {
   "name": "reactive-job-queue",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Samuel Giles",
   "license": "MIT",
   "description": "A reactive, reliable, job queue which includes state transitions. Backed by redis",
