@@ -98,6 +98,14 @@ function.
 - `job`  - (Object) the job to move into the complete state
 - `callback` - (Function) the callback to call when this operation completes.
 
+### waitQueueLength(callback)
+
+Get the number of items in the queue waiting to be processed.
+
+- `callback` - (Function) the callback to call with the data, the callback
+  should accept an error argument and a data argument.  The data argument will
+  be an integer indicating the number of items
+
 # TODO
 
 - Promises API
