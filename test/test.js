@@ -20,7 +20,7 @@ describe("JobQueue", function() {
 				}
 
 				// Test in queue
-				q.redisClient.rpop(['myqueue'], function(error, data) {
+				q.redisClient.rpop(['__rjq-myqueue'], function(error, data) {
 					if (error) {
 						assert.fail('error', 'no error', error);
 						done();
@@ -132,7 +132,7 @@ describe("JobQueue", function() {
 
 				if (receivedData2 && receivedData1) {
 					process.nextTick(function() {
-						redisClient.rpop("myqueue-test", function(error, data) {
+						redisClient.rpop("__rjq-myqueue-test", function(error, data) {
 							var parsedData = JSON.parse(data);
 							assert.equal("data3", parsedData.some);
 							done();
