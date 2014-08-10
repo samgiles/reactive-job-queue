@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "fakeredis": "^0.2.0",
-    "mocha": "^1.21.4"
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3"
   }
 }
