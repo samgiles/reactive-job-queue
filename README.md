@@ -1,6 +1,7 @@
 # Reactive Job Queue
 
 [![Build Status](https://travis-ci.org/samgiles/reactive-job-queue.svg)](https://travis-ci.org/samgiles/reactive-job-queue)
+[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
 A Reactive job queue backed by Redis.  This Job queue provides guarantees
 (as much as Redis can provide) about the loss of job data. The job state
