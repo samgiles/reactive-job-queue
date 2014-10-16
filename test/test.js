@@ -5,34 +5,44 @@ var sinon = require('sinon');
 
 describe("JobQueue", function() {
 
-	describe("#send(job, callback)", function() {
+	describe("#send(identifier, data, callback)", function() {
 
-		it("Should send the job data to the queue", function(done) {
+		it("Should send the identifier to the first queue and insert the data into the hashset", function(done) {
 			var q = new JobQueue({
 				redis: fakeredis.createClient("testsend"),
 				queuename: 'myqueue'
-			});
+			}, ['a', 'b']);
 
-			q.send({test: 'data'}, function(error, data) {
+			q.send("my-sane-id", {test: 'data'}, function(error) {
 				if (error) {
 					assert.fail('error', 'no error', error);
 					return;
 				}
 
 				// Test in queue
-				q.redisClient.rpop(['__rjq-myqueue'], function(error, data) {
+				q.redisClient.rpop(['__q-myqueue-a'], function(error, data) {
 					if (error) {
 						assert.fail('error', 'no error', error);
 						done();
 						return;
 					}
 
-					assert.equal('data', JSON.parse(data).test);
-					done();
+                    assert.equal('my-sane-id', data);
+
+                    q.redisClient.hexists(['__hs-myqueue', 'my-sane-id'], function(error, data) {
+                        assert.equal(data, 1);
+                        q.redisClient.hget(['__hs-myqueue', 'my-sane-id'], function(error, data) {
+                            var object = JSON.parse(data);
+                            assert.equal('a', object.state);
+                            assert.equal('my-sane-id', object.id);
+                            assert.equal('data', object.data.test);
+                            done();
+                        });
+                    });
 				});
 			});
 		});
-
+        /*
 		it("Should callback with error if the job parameter is not an object", function(done) {
 			var q = new JobQueue({
 				redis: fakeredis.createClient("testsend"),
@@ -49,9 +59,10 @@ describe("JobQueue", function() {
 				done();
 			});
 		});
+        */
 
 	});
-
+/*
 	describe("#registerProcessor(processor)", function() {
 
 		it("Should only register the first processor registered", function() {
@@ -158,4 +169,5 @@ describe("JobQueue", function() {
 			});
 		});
 	});
+*/
 });
