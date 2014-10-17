@@ -46,10 +46,10 @@ describe("JobQueue", function() {
 					return;
 				}
 
-                assert(hexistsSpy.calledWith(['my-sane-id', 'id']));
+                assert(hexistsSpy.calledWith(['my-sane-id', 'data']));
                 assert(
                     multiSpy.calledWith([
-                        ['hmset', 'my-sane-id', 'id', 'my-sane-id', 'state', 'a', 'data', JSON.stringify({ test: 'data' })],
+                        ['hmset', 'my-sane-id', 'state', 'a', 'data', JSON.stringify({ test: 'data' })],
                         ['lpush', '__q-myqueue-a', 'my-sane-id']
                     ])
                 );
@@ -95,7 +95,7 @@ describe("JobQueue", function() {
 					return;
 				}
 
-                assert(hexistsSpy.calledWith(['my-sane-id', 'id']));
+                assert(hexistsSpy.calledWith(['my-sane-id', 'data']));
                 assert(multiSpy.notCalled)
                 assert(execSpy.notCalled);
                 done();
