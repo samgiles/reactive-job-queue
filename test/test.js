@@ -63,6 +63,33 @@ describe("JobQueue", function() {
         */
 
 	});
+
+    describe("#done(identifier, expectedState, callback)", function() {
+        it("Should transition from expectedState to the next state defined by the stateTransitionFunction", function(done) {
+
+            var spy = sinon.spy();
+
+			var q = new JobQueue({
+				redis: fakeredis.createClient("testsend"),
+				queuename: 'myqueue'
+			}, serialList(['a', 'b']));
+
+            q._stateTransition = function(identifier, state, done) {
+                spy(identifier, state, done);
+                done();
+            };
+
+			q.send("my-sane-id", {test: 'data'}, function(error) {
+                q.done("my-sane-id", "a", function(err, result) {
+                    // Test in queue
+                    assert(spy.called, "Spy not called");
+                    assert(spy.calledWith("my-sane-id", { from: "a", to: "b" }));
+                    done();
+                });
+            });
+
+        });
+    });
 /*
 	describe("#registerProcessor(processor)", function() {
 
