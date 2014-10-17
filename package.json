@@ -12,7 +12,7 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha test/ --recursive --check-leaks --reporter=nyan",
+    "test": "mocha test/ --recursive --check-leaks",
     "coverage": "mocha test/test.js --require blanket --reporter=html-cov > cover.html"
   },
   "dependencies": {
