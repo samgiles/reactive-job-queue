@@ -163,26 +163,25 @@ describe("JobQueue", function() {
             });
         });
 
-        it('Should transition an identifier between two redis lists based on the transition argument', function() {
+        it('Should transition an identifier between two redis lists based on the transition argument', function(done) {
 			var q = this.q;
 
-            var multiSpy = sinon.spy();
             var execSpy = sinon.spy();
 
             q.redisClient.multi = function(commands) {
-                multiSpy(commands);
-                return { exec: execSpy };
+                assert.deepEqual(commands, [
+                    ["lrem", "__q-myqueue-a", 0, "my-sane-id"],
+                    ["rpush", "__q-myqueue-b", "my-sane-id"],
+                    ["hset", "my-sane-id", "state", "b"]
+                ]);
+
+                return { exec: function(func) {
+                    execSpy();
+                    func(null, 1);
+                }};
             };
 
             q._stateTransition("my-sane-id", { from: "a", to: "b" }, function(error) {
-                assert(multiSpy.called, "Multi not called");
-                assert(
-                    multiSpy.calledWith([
-                        ["lrem", "__q-myqueue-a", 0, "my-sane-id"],
-                        ["rpush", "__q-myqueue-b", "my-sane-id"]
-                    ])
-                );
-
                 assert(execSpy.called, "Exec not called");
                 done();
             });
