@@ -135,8 +135,16 @@ describe("JobQueue", function() {
     });
 
     describe("#has(identifier, callback)", function() {
-        it("Should return true or false value indicating the existence of the identifier in the state machine", function() {
+        it("Should return true when an identifier exists in the state machine", function(done) {
+            var q = this.q;
 
+            q.send("my-existing-id", { some: "test" }, function() {
+                q.has("my-existing-id", function(err, result) {
+                    assert.equal(true, result);
+                    assert.equal(null, err);
+                    done();
+                });
+            });
         });
     });
 /*
