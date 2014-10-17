@@ -288,16 +288,6 @@ describe("JobQueue", function() {
         });
     });
 
-    /*describe("#setState(identifier, state, [data])", function() {
-        it("If the identifier exists, update the state.", function() {
-
-        });
-
-        it("If the identifier does not exist, put it into the given state", function(done) {
-
-        });
-    });*/
-
 /*
 
 	describe("#waitQueueLength(callback)", function() {
