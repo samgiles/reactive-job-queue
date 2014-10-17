@@ -2,6 +2,7 @@ var assert = require('assert');
 var JobQueue = require('../lib');
 var fakeredis = require('fakeredis');
 var sinon = require('sinon');
+var serialList = require('../lib/serialstates');
 
 describe("JobQueue", function() {
 
@@ -11,7 +12,7 @@ describe("JobQueue", function() {
 			var q = new JobQueue({
 				redis: fakeredis.createClient("testsend"),
 				queuename: 'myqueue'
-			}, ['a', 'b']);
+			}, serialList(['a', 'b']));
 
 			q.send("my-sane-id", {test: 'data'}, function(error) {
 				if (error) {
