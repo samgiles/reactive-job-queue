@@ -214,6 +214,30 @@ describe("JobQueue", function() {
         });
     });
 
+    describe("#get(identifier, callback)", function() {
+        it("Should get the data object and the state from the hash set if the identifier exists in the state machine", function(done) {
+            var q = this.q;
+            var data = { test: 'foo' };
+
+            q.set('my-insane-id', data, function() {
+                q.get('my-insane-id', function(err, state, _data) {
+                    assert.equal(state, 'a');
+                    assert.deepEqual(_data, data);
+                    done();
+                });
+            });
+        });
+
+        it("Should error if the identifier does not exist in the state machine", function(done) {
+            var q = this.q;
+
+            q.get('my-extrasane-id', function(err, state, _data) {
+                assert(err);
+                done();
+            });
+        });
+    });
+
 /*
 
 	describe("#waitQueueLength(callback)", function() {
