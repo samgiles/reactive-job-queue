@@ -6,13 +6,17 @@ var serialList = require('../lib/serialstates');
 
 describe("JobQueue", function() {
 
+    beforeEach(function() {
+        this.q = new JobQueue({
+            redis: fakeredis.createClient("testsend"),
+            queuename: 'myqueue'
+        }, serialList(['a', 'b']));
+    });
+
 	describe("#send(identifier, data, callback)", function() {
 
 		it("Should send the identifier to the first queue and insert the data into the hashset", function(done) {
-			var q = new JobQueue({
-				redis: fakeredis.createClient("testsend"),
-				queuename: 'myqueue'
-			}, serialList(['a', 'b']));
+            var q = this.q;
 
 			q.send("my-sane-id", {test: 'data'}, function(error) {
 				if (error) {
@@ -69,10 +73,7 @@ describe("JobQueue", function() {
 
             var spy = sinon.spy();
 
-			var q = new JobQueue({
-				redis: fakeredis.createClient("testsend"),
-				queuename: 'myqueue'
-			}, serialList(['a', 'b']));
+			var q = this.q;
 
             q._stateTransition = function(identifier, state, done) {
                 spy(identifier, state, done);
@@ -95,10 +96,7 @@ describe("JobQueue", function() {
         it('Should fire the "transition" event', function(done) {
             var spy = sinon.spy();
 
-			var q = new JobQueue({
-				redis: fakeredis.createClient("testsend"),
-				queuename: 'myqueue'
-			}, serialList(['a', 'b']));
+			var q = this.q;
 
             q.on('transition', spy);
 
@@ -110,10 +108,7 @@ describe("JobQueue", function() {
         });
 
         it('Should transition an identifier between two redis lists based on the transition argument', function() {
-			var q = new JobQueue({
-				redis: fakeredis.createClient("testsend"),
-				queuename: 'myqueue'
-			}, serialList(['a', 'b']));
+			var q = this.q;
 
             var multiSpy = sinon.spy();
             var execSpy = sinon.spy();
@@ -135,6 +130,12 @@ describe("JobQueue", function() {
                 assert(execSpy.called, "Exec not called");
                 done();
             });
+
+        });
+    });
+
+    describe("#has(identifier, callback)", function() {
+        it("Should return true or false value indicating the existence of the identifier in the state machine", function() {
 
         });
     });
