@@ -272,6 +272,22 @@ describe("JobQueue", function() {
         });
     });
 
+    describe("#end()", function() {
+        it("Should emit an event once the redis connection has closed", function(done) {
+            var q = this.q;
+            var endSpy = sinon.spy();
+            var eventSpy = sinon.spy();
+
+            q.redisClient = { end: endSpy };
+            q.on('close', function(event) {
+                assert(endSpy.called);
+                done();
+            });
+
+            q.end();
+        });
+    });
+
 /*
 
 	describe("#waitQueueLength(callback)", function() {

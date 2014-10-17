@@ -13,7 +13,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/ --recursive --check-leaks",
-    "coverage": "mocha test/test.js --require blanket --reporter=html-cov > cover.html"
+    "coverage": "mocha test/test.js --require blanket -R mocha-term-cov-reporter"
   },
   "dependencies": {
     "hiredis": "^0.1.17",
@@ -24,6 +24,7 @@
     "blanket": "^1.1.6",
     "fakeredis": "^0.2.0",
     "mocha": "^1.21.4",
+    "mocha-term-cov-reporter": "^0.2.0",
     "sinon": "^1.10.3"
   },
   "config": {
