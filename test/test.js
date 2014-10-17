@@ -57,9 +57,10 @@ describe("JobQueue", function() {
                 done();
 			});
 		});
-/*
+
         it("Should update the data in the hashset if the identifier already exists in the state machine", function(done) {
             var q = this.q;
+            var data = { test: 'foo' };
 
             var hexistsSpy = sinon.spy();
             var multiSpy = sinon.spy();
@@ -81,20 +82,20 @@ describe("JobQueue", function() {
                     };
                 },
                 hset: function(commands, callback) {
-                    hsetSpy(commands);
+                    assert.deepEqual(commands, ['my-sane-id', 'data', JSON.stringify(data)]);
                     callback(null, 1);
                 }
             };
 
             q.redisClient = mockRedisClient;
 
-			q.set("my-sane-id", { test: 'data' }, function(error) {
+			q.set("my-sane-id", data, function(error) {
 				if (error) {
 					assert.fail('error', 'no error', error);
 					return;
 				}
 
-                assert(hexistsSpy.calledWith([q.hashSetName, 'my-sane-id']));
+                assert(hexistsSpy.calledWith(['my-sane-id', 'id']));
                 console.log(multiSpy.notCalled);
                 assert(multiSpy.notCalled)
                 assert(execSpy.notCalled);
@@ -102,7 +103,7 @@ describe("JobQueue", function() {
 			});
 
         });
-        */
+
         /*
 		it("Should callback with error if the job parameter is not an object", function(done) {
 			var q = new JobQueue({
