@@ -18,35 +18,49 @@ describe("JobQueue", function() {
 		it("Should put the identifier in the first queue and insert the data into the hashset, if it does not exist yet", function(done) {
             var q = this.q;
 
-			q.set("my-sane-id", {test: 'data'}, function(error) {
+            var hexistsSpy = sinon.spy();
+            var multiSpy = sinon.spy();
+            var execSpy = sinon.spy();
+
+            var mockRedisClient = {
+                hexists: function(commands, callback) {
+                    hexistsSpy(commands);
+                    callback(null, 0);
+                },
+                multi: function(commands) {
+                    multiSpy(commands);
+                    return {
+                        exec: function(func) {
+                            execSpy();
+                            func(null, 1);
+                        }
+                    };
+                }
+            };
+
+            q.redisClient = mockRedisClient;
+
+			q.set("my-sane-id", { test: 'data' }, function(error) {
 				if (error) {
 					assert.fail('error', 'no error', error);
 					return;
 				}
 
-				// Test in queue
-				q.redisClient.rpop(['__q-myqueue-a'], function(error, data) {
-					if (error) {
-						assert.fail('error', 'no error', error);
-						done();
-						return;
-					}
-
-                    assert.equal('my-sane-id', data);
-
-                    q.redisClient.hexists(['__hs-myqueue', 'my-sane-id'], function(error, data) {
-                        assert.equal(data, 1);
-                        q.redisClient.hget(['__hs-myqueue', 'my-sane-id'], function(error, data) {
-                            var object = JSON.parse(data);
-                            assert.equal('a', object.state);
-                            assert.equal('my-sane-id', object.id);
-                            assert.equal('data', object.data.test);
-                            done();
-                        });
-                    });
-				});
+                assert(hexistsSpy.calledWith([q.hashSetName, 'my-sane-id']));
+                assert(
+                    multiSpy.calledWith([
+                        ['hset', q.hashSetName, 'my-sane-id', JSON.stringify({ id: 'my-sane-id', state: 'a', data: { test: 'data' }})],
+                        ['lpush', '__q-myqueue-a', 'my-sane-id']
+                    ])
+                );
+                assert(execSpy.called);
+                done();
 			});
 		});
+
+        it("Should update the data in the hashset if the identifier already exists in the state machine", function() {
+
+        });
         /*
 		it("Should callback with error if the job parameter is not an object", function(done) {
 			var q = new JobQueue({
