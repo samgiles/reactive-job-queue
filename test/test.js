@@ -186,6 +186,29 @@ describe("JobQueue", function() {
                 assert(execSpy.called, "Exec not called");
                 done();
             });
+        });
+
+        it("If transition.to is not existant or falsey, then remove state field from hashset", function(done) {
+			var q = this.q;
+
+            var execSpy = sinon.spy();
+
+            q.redisClient.multi = function(commands) {
+                assert.deepEqual(commands, [
+                    ["lrem", "__q-myqueue-a", 0, "my-sane-id"],
+                    ["hdel", "my-sane-id", "state"]
+                ]);
+
+                return { exec: function(func) {
+                    execSpy();
+                    func(null, 1);
+                }};
+            };
+
+            q._stateTransition("my-sane-id", { from: "a" }, function(error) {
+                assert(execSpy.called, "Exec not called");
+                done();
+            });
 
         });
     });
