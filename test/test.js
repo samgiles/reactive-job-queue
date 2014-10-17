@@ -49,7 +49,7 @@ describe("JobQueue", function() {
                 assert(hexistsSpy.calledWith([q.hashSetName, 'my-sane-id']));
                 assert(
                     multiSpy.calledWith([
-                        ['hset', q.hashSetName, 'my-sane-id', JSON.stringify({ id: 'my-sane-id', state: 'a', data: { test: 'data' }})],
+                        ['hmset', 'my-sane-id', 'id', 'my-sane-id', 'state', 'a', 'data', JSON.stringify({ test: 'data' })],
                         ['lpush', '__q-myqueue-a', 'my-sane-id']
                     ])
                 );
