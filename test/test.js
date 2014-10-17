@@ -92,6 +92,23 @@ describe("JobQueue", function() {
     });
 
     describe("#_stateTransition(identifier, transition, callback)", function() {
+        it('Should fire the "transition" event', function(done) {
+            var spy = sinon.spy();
+
+			var q = new JobQueue({
+				redis: fakeredis.createClient("testsend"),
+				queuename: 'myqueue'
+			}, serialList(['a', 'b']));
+
+            q.on('transition', spy);
+
+            q._stateTransition("my-sane-id", { from: "a", to: "b" }, function(err) {
+                assert(spy.called);
+                assert(spy.calledWith({ id: "my-sane-id", from: "a", to: "b"}));
+                done();
+            });
+        });
+
         it('Should transition an identifier between two redis lists based on the transition argument', function() {
 			var q = new JobQueue({
 				redis: fakeredis.createClient("testsend"),
