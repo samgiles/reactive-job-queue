@@ -90,6 +90,37 @@ describe("JobQueue", function() {
 
         });
     });
+
+    describe("#_stateTransition(identifier, transition, callback)", function() {
+        it('Should transition an identifier between two redis lists based on the transition argument', function() {
+			var q = new JobQueue({
+				redis: fakeredis.createClient("testsend"),
+				queuename: 'myqueue'
+			}, serialList(['a', 'b']));
+
+            var multiSpy = sinon.spy();
+            var execSpy = sinon.spy();
+
+            q.redisClient.multi = function(commands) {
+                multiSpy(commands);
+                return { exec: execSpy };
+            };
+
+            q._stateTransition("my-sane-id", { from: "a", to: "b" }, function(error) {
+                assert(multiSpy.called, "Multi not called");
+                assert(
+                    multiSpy.calledWith([
+                        ["lrem", "__q-myqueue-a", 0, "my-sane-id"],
+                        ["rpush", "__q-myqueue-b", "my-sane-id"]
+                    ])
+                );
+
+                assert(execSpy.called, "Exec not called");
+                done();
+            });
+
+        });
+    });
 /*
 	describe("#registerProcessor(processor)", function() {
 
