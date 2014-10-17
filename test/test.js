@@ -146,6 +146,16 @@ describe("JobQueue", function() {
                 });
             });
         });
+
+        it("Should return false when an identifier does not exist in the state machine", function(done) {
+            var q = this.q;
+
+            q.has("my-non-existing-id", function(err, result) {
+                assert.equal(false, result);
+                assert.equal(null, err);
+                done();
+            });
+        });
     });
 /*
 	describe("#registerProcessor(processor)", function() {
