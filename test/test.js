@@ -96,7 +96,6 @@ describe("JobQueue", function() {
 				}
 
                 assert(hexistsSpy.calledWith(['my-sane-id', 'id']));
-                console.log(multiSpy.notCalled);
                 assert(multiSpy.notCalled)
                 assert(execSpy.notCalled);
                 done();
@@ -160,6 +159,18 @@ describe("JobQueue", function() {
             q._stateTransition("my-sane-id", { from: "a", to: "b" }, function(err) {
                 assert(spy.called);
                 assert(spy.calledWith({ id: "my-sane-id", from: "a", to: "b"}));
+                done();
+            });
+        });
+
+        it('Should fire the "end" event when an item is removed from the state machine context by transitioning from:x to nothing', function(done) {
+            var spy = sinon.spy();
+            var q = this.q;
+            q.on('transition', spy);
+
+            q._stateTransition("my-sane-id", { from: "a" }, function(err) {
+                assert(spy.called);
+                assert(spy.calledWith({ id: "my-sane-id", from: "a" }));
                 done();
             });
         });
