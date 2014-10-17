@@ -13,7 +13,7 @@ describe("JobQueue", function() {
         }, serialList(['a', 'b']));
     });
 
-	describe("#set(identifier, data, callback)", function() {
+	describe("#set(identifier, data, [state], callback)", function() {
 
 		it("Should put the identifier in the first queue and insert the data into the hashset, if it does not exist yet", function(done) {
             var q = this.q;
@@ -287,6 +287,16 @@ describe("JobQueue", function() {
             q.end();
         });
     });
+
+    /*describe("#setState(identifier, state, [data])", function() {
+        it("If the identifier exists, update the state.", function() {
+
+        });
+
+        it("If the identifier does not exist, put it into the given state", function(done) {
+
+        });
+    });*/
 
 /*
 
